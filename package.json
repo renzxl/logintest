@@ -9,7 +9,12 @@
   "author": "Lorenzo Stanton",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "jade": "^1.11.0"
+    "jade": "^1.11.0",
+    "morgan": "^1.7.0",
+    "pg": "^5.2.0",
+    "stylus": "^0.54.5",
+    "util": "^0.10.3"
   }
 }
