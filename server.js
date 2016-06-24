@@ -1,70 +1,44 @@
 var express = require('express'),
-    stylus = require('stylus'),
-    logger = require('morgan'),
-    bodyParser = require('body-parser');
-
-
-
-//var pg = require('pg');
-
-//var conString = "postgres://renzxl:password@localhost/renzxl";
-
-//var client = new pg.Client(conString);
-//client.connect(function(err) {
-//    if(err) {
-//        return console.error('could not connect to postgres', err);
-//    }
-//     client.query('SELECT * from company', function(err, result) {
-//        if(err) {
-//            return console.error('error running query', err);
-//        }
-//        var jsonstring = JSON.stringify(result.rows);
-//        const object = JSON.parse(jsonstring);
-//        const util = require('util') ;
-//        console.dir(object,{depth: null, colors:true});
-//        //output: Tue Jan 15 2013 19:12:47 GMT-600 (CST)
-//        client.end();
-//    });
-//});
-
-
-
+           passport= require('passport'),
+            LocalStrategy = require('passport-local').Strategy;
 
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var app = express();
 
-function compile(str, path) {
-    return stylus(str).set('filename', path);
-}
+//path instead of __dirname
+var config = require('./server/config/config')[env];
 
-app.set('views', __dirname + '/server/views');
-app.set('view engine', 'jade');
-app.use(logger('dev'));
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json());
-app.use(stylus.middleware(
-    {
-        src: __dirname + '/public',
-        compile: compile
-    }
-));
+require('./server/config/express')(app,config);
 
-app.use(express.static(__dirname + '/public'));
+require('./server/config/routes')(app);
 
-//add routes
-app.get('/partials/:partialPath', function(req, res) {
-    res.render('partials/' + req.params.partialPath);
+var userDB = require('./server/config/postgresql');
+userDB.setup(config);
+
+
+var checkout = userDB.AuthenticateUserPassword('thanks@gmail.com','password', config,function(result){
+    console.log("in passport");
+    var jsonstring = JSON.stringify(result.rows);
+    const object = JSON.parse(jsonstring);
+    const util = require('util');
+    console.dir(object, {depth: null, colors: true});
+
 });
 
-app.get('*', function (req,res) {
+/*
+passport.use(new LocalStrategy(
+    function(username, password, done){
+       userDB.AuthenticateUserPassword(username,password).exec(function(err,result){
+           console.log("in passport")
+       });
 
-    res.render('index');
+    }
+))
+
+passport.serializeUser()*/
+console.log("test %s", userDB.sayHelloInEnglish());
 
 
-}); //matches all routes. The application will deliver the index page for any route you don't have specified
-
-
-var port = process.env.PORT || 3030;
-app.listen(port);
-console.log('Listening on port ' + port + '...');
+app.listen(config.port);
+console.log('Listening on port ' + config.port + '...');
