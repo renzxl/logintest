@@ -24,7 +24,7 @@ var setup =  function(config) {
                var jsonstring = JSON.stringify(result.rows);
                const object = JSON.parse(jsonstring);
                const util = require('util');
-               console.dir(object, {depth: null, colors: true});
+               //console.dir(object, {depth: null, colors: true});
 
                client.end();
                
@@ -48,11 +48,11 @@ var AuthenticateUserPassword =  function(user, password,config,callback) {
     client.connect();
 
 
-    var query = client.query('SELECT count(*) validuser from user_login where username= ' + searchuser + ' and password=' + searchpassword);
+    var query = client.query('SELECT username, password from user_login where username= ' + searchuser + ' and password=' + searchpassword);
 
     query.on('row', function(row, result) {
         //todo add exception handling
-        console.log("in postgress");
+        //console.log("in postgress");
          result.addRow(row);
 
        
@@ -60,7 +60,7 @@ var AuthenticateUserPassword =  function(user, password,config,callback) {
     });
     query.on('end', function(result) {
         //todo close client connection
-        console.log("leaving postgress");
+        //console.log("leaving postgress");
        callback(result);
 
        
