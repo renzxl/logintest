@@ -1,6 +1,5 @@
-var express = require('express'),
-           passport= require('passport'),
-            LocalStrategy = require('passport-local').Strategy;
+var express = require('express');
+       
 
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -11,10 +10,10 @@ var config = require('./server/config/config')[env];
 
 require('./server/config/express')(app,config);
 
-require('./server/config/routes')(app);
+require('./server/config/passport')(config);
 
-var userDB = require('./server/config/postgresql');
-userDB.setup(config);
+require('./server/config/routes')(app, config);
+
 
 
 /*var checkout = userDB.AuthenticateUserPassword('thans@gmail.com','password', config,function(result){
@@ -30,53 +29,12 @@ userDB.setup(config);
         console.log("no user found");
     }
 });*/
+//userDB.addUser('Mike','Johnson','test@gmail.com','horsesfly',config);
+//userDB.addUser('John','Doe','Doe@gmail.com','unicorns',config);
+//userDB.addUser('Ruth','Boaz','rboaz@gmail.com','sunset',config);
 
 
-passport.use(new LocalStrategy(
-    function(username, password, done){
-        userDB.AuthenticateUserPassword(username,password, config,function(result) {
-            var user;
-            if (result.rowCount > 0) {
-                 user = JSON.stringify(result.rows);
-            }
-            if (user){
 
-                return done(null,user);
-            }
-            else{
-                return done(null, false);
-            }
-
-       });
-
-    }
-));
-
-passport.serializeUser(function(user, done ){
-
-
-   if (user){
-       var object = JSON.parse(user);
-       var id = object[0].username;
-       done(null, id);//rows[0]["username"] )
-   }
-});
-
-passport.deserializeUser(function(username,done){
-        userDB.AuthenticateUserPassword(username,"password", config,function(result) {
-            var user = JSON.stringify(result.rows);
-            console.dir(user);
-
-            if (user.length != 0) {
-
-                return done(null, user);
-            }
-            else {
-                return done(null, false);
-            }
-        });
-
-});
 /*passport.serializeUser()*/
 //console.log("test %s", userDB.sayHelloInEnglish());
 
