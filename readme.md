@@ -94,9 +94,9 @@ N/A
 
 ## Acknowledgments
 
-* Hat's off to Joe Eames. In my opinion, he developed one of the best plural sight classes that can easily be followed.Hat tip to anyone who's code was used
-* Joe used MongDB instead of PostgreSQL. He highlights areas where the video instructions no longer matches new versions of
-* packages. The course is about 4 hours, but well worth the time. If you follow along, it will take you well north of 4 hours
-* with typos and just trying to understand how the application works. If you are familiar with NodeJS, you be able
-* to complete the class much faster. Link to course: https://app.pluralsight.com/library/courses/building-angularjs-nodejs-apps-mean/table-of-contents
+* Hat's off to Joe Eames. In my opinion, he developed one of the best plural sight classes that can easily be followed.
+* Joe used MongDB  and I modified things to use PostgreSQL. He did a great job highlighting areas that 
+* needed to be changed due to updates to various javascript files.
+* 
+* The course is about 4 hours, but well worth the time. Link to course: https://app.pluralsight.com/library/courses/building-angularjs-nodejs-apps-mean/table-of-contents
 
