@@ -100,3 +100,4 @@ N/A
 * 
 * The course is about 4 hours, but well worth the time. Link to course: https://app.pluralsight.com/library/courses/building-angularjs-nodejs-apps-mean/table-of-contents
 
+ 
